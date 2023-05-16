@@ -48,7 +48,7 @@ export const RegistrationForm =  () => {
     const [password, setPassword] = useState('');
     const [lastname, setLastName] = useState('');
     const [firstname, setFirstName] = useState('');
-    const [clientID, setClientID] = useState('');
+    const [clientId, setClientId] = useState('');
 
     useEffect (() => {
       console.log('Error', error)
@@ -64,7 +64,8 @@ export const RegistrationForm =  () => {
 
   const loginSubmit  = async () => {
     try {
-       const data = await request ('/api/auth/sign_up', 'POST', {email, password})
+       let clientId = "3532b404-5b2e-4f76-a59a-30d0cf6a1c4a";
+       const data = await request ('https://sf-final-project-be.herokuapp.com/api/auth/sign_up', 'POST', {email, password,clientId})
        auth.login(data.token,data.userId)
     } catch (e) {}
   }
@@ -101,7 +102,7 @@ export const RegistrationForm =  () => {
       <div>
         <Label>
           clientID:
-        <Input type="clientid" id="clientid" placeholder="ClientId"   value={clientID} onChange={(event ) => setClientID(event .target.value)}  />
+        <Input type="clientId" id="clientId" placeholder="clientId"   value={clientId} onChange={(event ) => setClientId(event .target.value)}  />
         </Label>
       </div>
       
