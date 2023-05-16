@@ -3,6 +3,7 @@ import {useState, useCallback} from 'react';
 export const useHttp = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const baseUrl = 'https://sf-final-project-be.herokuapp.com/api/';
 
     const request = useCallback (async (url,method = 'Get', body=null, headers = {}) =>{
         setLoading (true)
@@ -11,7 +12,7 @@ export const useHttp = () => {
                 body = JSON.stringify(body)
                 headers['Content-type'] = 'aplication/json'
             }
-            const response = await fetch(url, {method, body, headers})
+            const response = await fetch(baseUrl+url, {method, body, headers})
             const data = await response.json()
 
             if (!response.ok) {
