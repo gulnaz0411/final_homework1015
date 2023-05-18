@@ -71,7 +71,7 @@ import {AuthContext} from './context/AuthContext';
 
   const loginSubmit  = async () => {
     try {
-       const data = await request ('https://sf-final-project-be.herokuapp.com/api/auth/sign_in', 'POST', {email, password})
+       const data = await request ('/auth/sign_in', 'POST', {email, password})
        auth.login(data.token,data.userId)
     } catch (e) {}
   }
