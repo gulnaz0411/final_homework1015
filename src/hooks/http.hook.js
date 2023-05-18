@@ -9,25 +9,25 @@ export const useHttp = () => {
         setLoading (true)
         try {
             if (body) {
-                body = JSON.stringify(body)
-                headers['Content-type'] = 'aplication/json'
+                body = JSON.stringify(body);
+                headers['Content-type'] = 'aplication/json';
             }
-            const response = await fetch(baseUrl+url, {method, body, headers})
-            const data = await response.json()
+            const response = await fetch(baseUrl+url, {method, body, headers});
+            const data = await response.json();
 
             if (!response.ok) {
                 throw new Error( 'Не удалось отправить сообщение')
             }
 
-            setLoading (false)
-           return data
+            setLoading (false);
+           return data;
         } catch(e) {
         
-           setLoading(false)
-           setError(e.message)
-           throw e
+           setLoading(false);
+           setError(e.message);
+           throw e;
         }
     }, [])
-    const clearError = useCallback(() => setError(null),[])
-    return {loading, request, error,clearError}
-}
+    const clearError = useCallback(() => setError(null),[]);
+    return {loading, request, error,clearError};
+};
