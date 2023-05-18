@@ -43,15 +43,16 @@ export const Button = styled.button`
 
 export const RegistrationForm =  () => {
     const auth = useContext(AuthContext)
-    const { error, request,} = useHttp('');
+    const { loading,error, request,clearError}} = useHttp('');
     const [email,setEmail] = useState ('');
     const [password, setPassword] = useState('');
     const [lastname, setLastName] = useState('');
     const [firstname, setFirstName] = useState('');
-    const [clientId, setClientId] = useState('');
+    const [clientID, setClientID] = useState('');
 
     useEffect (() => {
-      console.log('Error', error)
+      console.log('Error', error,clearError)
+      clearError() 
      }, [error,])
 
 
@@ -64,8 +65,8 @@ export const RegistrationForm =  () => {
 
   const loginSubmit  = async () => {
     try {
-       let clientId = "3532b404-5b2e-4f76-a59a-30d0cf6a1c4a";
-       const data = await request ('https://sf-final-project-be.herokuapp.com/api/auth/sign_up', 'POST', {email, password,clientId})
+       let clientID = "3532b404-5b2e-4f76-a59a-30d0cf6a1c4a";
+       const data = await request ('/auth/sign_up', 'POST', {email, password,clientID})
        auth.login(data.token,data.userId)
     } catch (e) {}
   }
@@ -102,11 +103,11 @@ export const RegistrationForm =  () => {
       <div>
         <Label>
           clientID:
-        <Input type="clientId" id="clientId" placeholder="clientId"   value={clientId} onChange={(event ) => setClientId(event .target.value)}  />
+        <Input type="clientID" id="clientID" placeholder="clientID"   value={clientID} onChange={(event ) => setClientID(event .target.value)}  />
         </Label>
       </div>
       
-        <Button onClick={loginSubmit} variant="primary" type="submit">Sign in</Button>
+        <Button onClick={loginSubmit} disabled={loading} variant="primary" type="submit">Sign in</Button>
       </Form>
     );  
     }; 
