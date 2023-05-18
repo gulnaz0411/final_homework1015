@@ -1,8 +1,11 @@
-import React, { useState,} from 'react';
+import React, { useState,useEffect } from 'react';
 import { Form, Container, Button,Row,Col}  from 'react-bootstrap';
+import {useHttp} from './hooks/http.hook';
 
 
 export const Reporttheft = () => {
+ 
+  const {loading, error, request,clearError} = useHttp('');
   const [licenseNumber, setLicenseNumber] = useState('');
   const [fullName, setFullName]= useState('');
   const [bikeType,setBikeType] = useState('');
@@ -10,59 +13,40 @@ export const Reporttheft = () => {
   const [date, setDate] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [responsibleStaff, setResponsibleStaff] = useState('');
-  const [report, SetReports] = useState ('');
+ 
   
+  useEffect (() => {
+    console.log('Error', error)
+    
+    clearError()
+   }, [error,clearError])
 
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const report = {
-      licenseNumber,
-      fullName,
-      bikeType,
-      bikeColor,
-      date,
-      additionalInfo,
-      responsibleStaff,
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  }
+  
+ 
+  const reportSubmit  = async () => {
+    try {
+       const data = await request ('/public/report', 'POST', {
+        licenseNumber,
+        fullName,
+        bikeType,
+        date,
+        
+
+       });
+     console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  
      
 
-
-    setLicenseNumber('');
-    setFullName('');
-    setBikeType([]);
-    setBikeColor('');
-    setDate('');
-    setAdditionalInfo('');
-    setResponsibleStaff('');
-
-    try {
-      const response = await fetch('/api/cases', {
-        method: 'POST',
-        headers: {
-          'Context-type': 'application/json'
-        },
-        body: JSON.stringify({report, SetReports})
-
-      });
-
-      if (response.ok) {
-          SetReports ('');
-          alert('Сообщение отправлено');
-
-      } else {
-        throw new Error ('Не удалось отправить сообщение');
-
-      }
-    }  catch (error) {
-      console.error(error);
-      alert(error.report)
-    }
-    
-    
-
-  };
  
 
    return (
@@ -82,7 +66,7 @@ export const Reporttheft = () => {
            <Form.Label column sm={3}>ФИО</Form.Label>
            <Col>
             <Form.Control type="text" placeholder="Введите ФИО клиента"
-             value={fullName} onChange={(event) => setFullName(event.target.ariaValueMin)}
+             value={fullName} onChange={(event) => setFullName(event.target.value)}
              />
 
            </Col>
@@ -141,10 +125,11 @@ export const Reporttheft = () => {
           </Form.Group>
          )}
      
-      <Button variant="primary" type="submit">
+      <Button  onClick={reportSubmit}  variant="primary" type="submit">
         Добавить
       </Button>
     </Form>
      </Container>
-);
-         };
+
+    );
+         };
